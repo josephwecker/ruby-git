@@ -289,16 +289,6 @@ module Git
       self.lib.reset(commitish, opts)
     end
 
-    # cleans the working directory
-    #
-    # options:
-    #  :force
-    #  :d
-    #
-    def clean(opts = {})
-      self.lib.clean(opts)
-    end
-
     # reverts the working directory to the provided commitish.
     # Accepts a range, such as comittish..HEAD
     #
@@ -307,6 +297,17 @@ module Git
     #
     def revert(commitish = nil, opts = {})
       self.lib.revert(commitish, opts)
+    end
+
+    # cleans the working directory
+    #
+    # options:
+    #  :force
+    #  :d
+    #
+    def clean(opts = {})
+      opts = { :force => true, :d => true }.merge(opts)
+      self.lib.clean(opts)
     end
 
     # commits all pending changes in the index file to the git repository
@@ -360,8 +361,12 @@ module Git
     # merges one or more branches into the current working branch
     #
     # you can specify more than one branch to merge by passing an array of branches
-    def merge(branch, message = 'merge')
-      self.lib.merge(branch, message)
+    def merge(branch, message = 'merge', arr = [])
+      self.lib.merge(branch, message, arr)
+    end
+
+    def rebase(branch)
+      self.lib.rebase(branch)
     end
 
     # iterates over the files which are unmerged

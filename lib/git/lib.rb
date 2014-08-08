@@ -522,7 +522,7 @@ module Git
     def checkout(branch, opts = {})
       arr_opts = []
       arr_opts << '-f' if opts[:force]
-      arr_opts << '-b' << opts[:new_branch] if opts[:new_branch]
+      arr_opts << '-b' if opts[:new_branch]
       arr_opts << branch
       
       command('checkout', arr_opts)
@@ -535,11 +535,14 @@ module Git
       command('checkout', arr_opts)
     end
     
-    def merge(branch, message = nil)      
-      arr_opts = []
+    def merge(branch, message = nil, arr_opts = [])
       arr_opts << '-m' << message if message
       arr_opts += [branch]
       command('merge', arr_opts)
+    end
+
+    def rebase(branch)
+      command('rebase', [branch])
     end
 
     def unmerged
